@@ -306,7 +306,7 @@
 </html>
 <!-- 
  / -------------- Wp Insert Query -----------------/
-<?php
+
 
 $wpdb->insert('wp_submitted_form', array(
     'name' => 'Kumkum',
@@ -418,7 +418,7 @@ function filter_wc_order_table($query_vars){
 }
 
 // --------------- add delete attributes on iframe -------- /
-?>
+
 <script type="text/javascript">
 
 var frame =  $('iframe');
@@ -427,7 +427,7 @@ var body = contents.find('body').attr("oncontextmenu", "myFunction()");
 var body = contents.find('body').append('<div>New Div</div>');
 
 </script>
-<?php
+
 // -------------- Remove access from other system ----------/
 
  $ip = $_SERVER['REMOTE_ADDR'];
@@ -458,7 +458,7 @@ var body = contents.find('body').append('<div>New Div</div>');
 
 // we can use this also : http://jsfiddle.net/2crQ7/
 
-?>
+
 
 <div class="col-md-12 forms_sec">
     <div id="map"></div>
@@ -507,7 +507,7 @@ var body = contents.find('body').append('<div>New Div</div>');
  
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJqFaCvuUFQ8u2qKJUG67ZHgkD6FFQ9cE"></script>
-<?php
+
 // ------------------- woocommerce cart update -------------------
 
 add_action( 'template_redirect', 'remove_product_from_cart' );

@@ -1,0 +1,2073 @@
+/**
+<?php / -------------- Wp Insert Query -----------------/ $wpdb->insert('wp_submitted_form', array('name'=> 'Kumkum',
+        'email'=> 'kumkum@gmail.com',
+        'phone'=> '3456734567', // ... and so on
+    ));
+
+// ------------------ Get http request data from webhook ----------------- /
+
+$data =file_get_contents("php://input");
+$events =json_decode($data, true);
+
+foreach ($events as $event) {
+    // Here, you now have each event and can process them how you like
+    process_event($event);
+}
+
+// --------------- Get all URL fields ---------------- /
+
+// Get all parameters from url JS
+function getAllFields () {
+    var vars=[],
+    hash;
+    var hashes=window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+    for (var i=0; i < hashes.length; i++) {
+        hash=hashes[ i].split('=');
+        vars[ hash[0]]=hash[1];
+    }
+
+    return vars;
+}
+
+// ------- Add css from database ------------ /
+
+/**
+ * Add color styling from theme
+  
+ /**
+function wpdocs_styles_method() {
+    wp_enqueue_style('custom-style',
+        get_template_directory_uri() . '/css/custom_script.css'
+    );
+    $color =get_theme_mod('my-custom-color'); //E.g. #FF0000
+
+    $custom_css ="
+ .mycolor {
+        background: {
+            $color
+        }
+
+        ;
+    }
+
+    ";
+ wp_add_inline_style('custom-style', $custom_css );
+}
+
+add_action('wp_enqueue_scripts', 'wpdocs_styles_method');
+
+// ------------- Send Email in php ---------------- /
+
+wp_mail($to, $subject, nl2br($body), $headers);
+
+// ---------------- Wp Filter Example -------------/
+
+$my_name ='Luis';
+
+add_filter('my_name', 'uppercase_it');
+
+function uppercase_it($name) {
+    return strtoupper($name);
+}
+
+$new_name =apply_filters('my_name', $my_name);
+
+dump($new_name);
+
+// -------- Convert html page to pdf --------- /
+/*
+
+  https://pdfcrowd.com/blog/convert-html-to-pdf-in-php/#:~:text=%3C%3F-,php%20require%20'pdfcrowd.,%3B%20filename%3D%5C%22example.
+
+
+// -------------- Remove menu list --------------------------- /
+
+add_action('admin_menu', 'remove_admin_menus');
+
+function remove_admin_menus() {
+    global $menu;
+
+    $user_id =get_current_user_id();
+    $user_data =get_userdata($user_id);
+    $roles =$user_data->roles;
+
+    if(in_array('vendor', $roles)) {
+        unset($menu[26]);
+        unset($menu[58]);
+    }
+}
+
+// ----------------- Upload image/attachment via media upload api in wp ------------- /
+
+Using the REST API to upload a file to WordPress is quite simple. All you need is to send the file in a POST-Request to the wp/v2/media route. There are two ways of sending a file. The first method simply sends the file in the body of the request. The following PHP script shows the basic principle: $file =file_get_contents('test.jpg');
+$url ='http://example.com/wp-json/wp/v2/media/';
+$ch =curl_init();
+$username ='admin';
+$password ='password';
+
+curl_setopt($ch, CURLOPT_URL, $url );
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $file );
+curl_setopt($ch, CURLOPT_HTTPHEADER, [ 'Content-Disposition: form-data; filename="example.jpg"',
+    'Authorization: Basic ' . base64_encode($username . ':' . $password ),
+    ]);
+$result =curl_exec($ch );
+curl_close($ch );
+print_r(json_decode($result ));
+
+This would send the file test.jpg using CURL and create a new attachment. // ----------------- Get error in wpdb query ------------------ /
+
+$data['pickup_id']=$wpdb->last_error;
+
+// ----------------- Search post by title ------------------- /
+
+$myposts =$wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->posts WHERE post_title LIKE '%s'", '%' . $wpdb->esc_like($title ) .'%'));
+
+// -------------- Filter order table by user id ----------------- /
+
+add_action('pre_get_posts', 'filter_wc_order_table');
+
+function filter_wc_order_table($query_vars) {
+
+    $user_id =get_current_user_id();
+    $user_data =get_userdata($user_id);
+    $roles =$user_data->roles;
+
+    if($_GET['post_type']=='shop_order' && in_array('vendor', $roles)) {
+
+        $query_vars->query_vars['meta_query']=array(array('key'=> '_customer_user',
+                'value'=> $user_id,
+                'compare'=> '=='));
+    }
+}
+
+// --------------- add delete attributes on iframe -------- /
+
+<script type="text/javascript">var frame=$('iframe');
+var contents=frame.contents();
+var body=contents.find('body').attr("oncontextmenu", "myFunction()");
+var body=contents.find('body').append('<div>New Div</div>');
+
+</script> // -------------- Remove access from other system ----------/
+
+$ip =$_SERVER['REMOTE_ADDR'];
+
+if($ip =='103.251.221.98') {
+    // My ip : 103.251.221.98
+
+    // content here
+
+}
+
+// --------------------- JS Cheat Sheet ------------------------- /
+
+Url : https: //overapi.com/javascript
+
+// --------------- jQuery CheatSheet ------------------------ /
+
+Url : https: //overapi.com/jquery
+
+// ------------------- PhP CheatSheet --------------------- /
+
+Url : https: //overapi.com/php
+
+// ------------------- CSS Cheat Sheet -------------------- /
+
+Url : https: //overapi.com/css
+
+// ------------------- Point loctions on Google map with labels ----------------- /
+
+// we can use this also : http://jsfiddle.net/2crQ7/
+
+
+
+<div class="col-md-12 forms_sec"><div id="map"></div></div><script>pos= {
+    lat: position.coords.latitude, //current user latitutde
+        lng: position.coords.longitude //current user longitude
+}
+
+;
+
+function initMap(pos, jobArr) {
+
+    var map=new google.maps.Map(document.getElementById('map'), {
+        center: pos,
+        zoom: 12
+    });
+setMarkers(map, jobArr);
+
+}
+
+
+function setMarkers(map, jobArr) {
+    for (var i=0; i < jobArr.length; i++) {
+
+        var latitude=parseFloat(jobsArr[i].lat);
+        var longitude=parseFloat(jobsArr[i].lon);
+
+        var latlngset=new google.maps.LatLng(latitude, longitude);
+        var company_name=" <b>Company</b> : "+jobArr[i].company_name+"<br><br> <b>Title</b> : "+jobArr[i].post_title;
+
+        var marker=new google.maps.Marker({
+            position:latlngset,
+            map: map,
+            title: company_name,
+        });
+
+    var infowindow=new google.maps.InfoWindow();
+
+    google.maps.event.addListener(marker, "click", (function(marker, company_name, infowindow) {
+                return function() {
+                    infowindow.setContent(company_name);
+                    infowindow.open(map, marker);
+                }
+
+                ;
+            }) (marker, company_name, infowindow));
+}
+}
+
+</script><script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJqFaCvuUFQ8u2qKJUG67ZHgkD6FFQ9cE"></script> // ------------------- woocommerce cart update -------------------
+
+add_action('template_redirect', 'remove_product_from_cart');
+
+function remove_product_from_cart() {
+
+    global $woocommerce;
+    global $wpdb;
+
+    if(is_cart()) {
+        // || is_checkout()
+
+
+        $cart_content =$woocommerce->cart->get_cart();
+
+        // foreach ( $cart_item_data->get_cart() as $hash => $value ) {
+        foreach ($cart_content as $hash => $value ) {
+
+            $pid->user_id =get_current_user_id();
+            $pid->id =$value['product_id'];
+            $value1 =array();
+            $value2 =array();
+            $value1['get_price']=$value['data']->get_price();
+            $value1['get_sale_price']=$value['data']->get_sale_price();
+            $value1['get_regular_price']=$value['data']->get_regular_price();
+
+            $value['data']->set_price($wr);
+            $value['data']->set_sale_price($wr1);
+            $value['data']->set_regular_price($wr2);
+
+            $value2['get_price']=$value['data']->get_price();
+            $value2['get_sale_price']=$value['data']->get_sale_price();
+            $value2['get_regular_price']=$value['data']->get_regular_price();
+            echo "<pre>";
+            print_r($pid);
+            // print_r($value2);
+            echo "</pre>";
+        }
+
+        // echo "<pre>";
+        // print_r($cart_content);
+        // echo "</pre>";
+
+    }
+}
+
+// ---------------------------------------------- Wc_get_order function -----------------------------------------------------
+
+// Getting an instance of the WC_Order object from a defined ORDER ID
+$order =wc_get_order($order_id );
+
+// Iterating through each "line" items in the order
+foreach ($order->get_items() as $item_id => $item ) {
+
+    // Get an instance of corresponding the WC_Product object
+    $product =$item_data->get_product();
+
+    $active_price =$product->get_price(); // The product active raw price
+
+    $regular_price =$product->get_sale_price(); // The product raw sale price
+
+    $sale_price =$product->get_regular_price(); // The product raw regular price
+
+    $product_name =$item->get_name(); // Get the item name (product name)
+
+    $item_quantity =$item->get_quantity(); // Get the item quantity
+
+    $item_subtotal =$item->get_subtotal(); // Get the item line total non discounted
+
+    $item_subto_tax =$item->get_subtotal_tax(); // Get the item line total tax non discounted
+
+    $item_total =$item->get_total(); // Get the item line total discounted
+
+    $item_total_tax =$item->get_total_tax(); // Get the item line total tax discounted
+
+    $item_taxes =$item->get_taxes(); // Get the item taxes array
+
+    $item_tax_class =$item->get_tax_class(); // Get the item tax class
+
+    $item_tax_status=$item->get_tax_status(); // Get the item tax status
+
+    $item_downloads =$item->get_item_downloads(); // Get the item downloads
+
+    // Displaying this data (to check)
+    echo 'Product name: ' .$product_name.' | Quantity: ' .$item_quantity.' | Item total: ' . number_format($item_total, 2);
+}
+
+// -------------------------------------- Woocommerce Hooks and filter ----------------------
+
+$url ="https://woocommerce.wp-a2z.org/oik_hook/"; // visit link
+
+// ---------------- Wp Update Query ------------------ //
+
+$wpdb->update('table_name', array('id'=>$id, 'title'=>$title, 'message'=>$message), array('id'=>$id));
+
+//---------------------------------- OR we can use this------------------------------------------------
+
+$wpdb->update($wpdb->posts, array('post_title'=> 'Interview-#' . $post_id, 'post_status'=> 'publish'), array('ID'=> $post_id ));
+
+
+// ------------------------------------------- Update woocommerce cart data ---------------------------------------------
+
+// Visit link for detail methods - https://woocommerce.wp-a2z.org/oik_file/includes/abstracts/abstract-wc-product-php/
+
+add_action('woocommerce_before_calculate_totals', 'misha_recalc_price');
+
+function misha_recalc_price($cart_object ) {
+    foreach ($cart_object->get_cart() as $hash => $value ) {
+        $value['data']->set_price(10);
+    }
+}
+
+// ---------------Meat query description ------------- /
+'meta_query' also contains one or more arrays with the following keys: 'key'(string) - Custom field key. 'value'(string|array) - Custom field value. It can be an array only when compare is 'IN',
+'NOT IN',
+'BETWEEN',
+or 'NOT BETWEEN' . You don't have to specify a value when using the ' EXISTS' or ' NOT EXISTS' comparisons in WordPress 3.9 and up.
+(Note: Due to bug #23268, value is required for NOT EXISTS comparisons to work correctly prior to 3.9. You must supply some string for the value parameter. An empty string or NULL will NOT work. However, any other string will do the trick and will NOT show up in your SQL when using NOT EXISTS. Need inspiration? How about 'bug #23268' .) 'compare'(string) - Operator to test. Possible values are '=',
+'!=',
+'>',
+'>=',
+'<',
+'<=',
+'LIKE',
+'NOT LIKE',
+'IN',
+'NOT IN',
+'BETWEEN',
+'NOT BETWEEN',
+'EXISTS' and 'NOT EXISTS' . Default value is '=' . 'type'(string) - Custom field type. Possible values are 'NUMERIC',
+'BINARY',
+'CHAR',
+'DATE',
+'DATETIME',
+'DECIMAL',
+'SIGNED',
+'TIME',
+'UNSIGNED' . Default value is 'CHAR' . // ----------------- Using cURL in jQuery / Sending http request using jQuery ---------------- /
+
+var settings= {
+    "url": "https://api.foursquare.com/v2/venues/search?client_id=BUBHBLCO4L4TIAQIJSSBW2M5L2WB30ZHZ3G3LDUW0TOZRVZ2&client_secret=XY0OUJEF2TQVGBNGCJZPK05T2AHZX25O1LFEN5PRM13WKAQI&v=20120610&intent=global&query=airport&limit=10",
+        "method": "GET",
+        "timeout": 0,
+}
+
+;
+
+$.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+
+// ------------ Get Day of the week By date ----------
+
+echo "October 17, 2020 is on a " . date("l", mktime(0, 0, 0, 10, 17, 2020)); // 10=month , 17=date , 2020=Year.
+
+// ------------- Redirect to plugin settings on activation -----------
+
+/**
+ * Redirect to plugin settings page after activated.
+ *
+ * @param string $plugin Get a plugin base url.
+ 
+function wb_ajax_filter_activation_redirect_settings($plugin ) {
+
+    if (plugin_basename(__FILE__)===$plugin ) {
+        wp_safe_redirect(admin_url('admin.php?page=wc-ajax-filter-settings'));
+        exit;
+    }
+}
+
+add_action('activated_plugin', 'wb_ajax_filter_activation_redirect_settings');
+
+// ------------ Add custom field to post edit page ----------/
+
+// ------------ Get all timezones with Zone label ----------- /
+
+$zones_array =array();
+$timestamp =time();
+
+foreach (timezone_identifiers_list() as $key => $zone ) {
+    date_default_timezone_set($zone );
+    // $zones_array[ $key ]['zone']          = $zone;
+    $zones_array[ $zone ]='GMT ' . date('P', $timestamp );
+}
+
+echo '<pre>';
+print_r($zones_array );
+echo '</pre>';
+
+// making the meta box (Note: meta box != custom meta field)
+function wpse_add_custom_meta_box_2() {
+    add_meta_box('custom_meta_box-2', // $id
+        'Dauer2', // $title
+        'show_custom_meta_box_2', // $callback
+        'project', // $page
+        'normal', // $context
+        'high' // $priority
+    );
+}
+
+add_action('add_meta_boxes', 'wpse_add_custom_meta_box_2');
+
+// --------- Exception handling -----------------
+
+try {
+    $decoded =JWT: :decode($token, JWT_AUTH_SECRET_KEY, array('HS256'));
+    $decoded_array =(array) $decoded;
+
+    if (count($decoded) > 0) {
+        $user_id =$decoded_array['data']->user->id;
+    }
+
+    if (user_id_exists($user_id)) {
+        return $user_id;
+    }
+
+    else {
+        return false;
+
+    }
+
+}
+
+catch (\Exception $e) {
+    // Also tried JwtException
+    return false;
+}
+
+// ------------- Get page url with parameters ------------ /
+
+$base_url =(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
+$url_arr =$base_url . $_SERVER["REQUEST_URI"]; //https://braaps.com/dashboard/products/
+$url =explode('/', $url_arr);
+
+// --------------- submit form data in jquery -------------- /
+/*
+    var data=jQuery('form').serializeArray();
+        var jsonData = {};
+        jQuery(data).each(function(key,item){
+          jsonData[item.name]=item.value;
+        });
+ 
+// ------------------- Create Output File --------------/
+
+$day_before =gmdate('d M', strtotime($iterated_date . ' -6 day'));
+
+$wer1 =json_encode($wer1);
+
+$txt ="user id date";
+
+$myfile =file_put_contents('wp-content/plugins/web-custom-work/template/inc/logs.php', $wer1.PHP_EOL , FILE_APPEND | LOCK_EX);
+
+$myfile =file_put_contents('C:\xampp\htdocs\wordpress\wp-content\plugins\custom/logs.php', print_r($data, true) . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+$plugin_dir =ABSPATH . 'wp-content/plugins/plugin-folder/';
+
+$myfile =file_put_contents(ABSPATH . 'wp-content/plugins/logs.php', print_r($data, true) . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+$myfile =file_put_contents(plugin_dir_path(__FILE__) . 'logs.php', print_r($data, true) . PHP_EOL, FILE_APPEND | LOCK_EX);
+
+$terms =get_terms($taxonomies, $args);
+file_put_contents('log.txt', print_r($terms, true));
+
+$myfile =file_put_contents('/home2/fintera/public_html/wp-content/plugins/MobileAppApiWp-master/logs.php', print_r($data, true).PHP_EOL, FILE_APPEND | LOCK_EX);
+
+phpcs -s --standard=WordPress "~/Local Sites/blocks/app/public/wp-content/plugins/buddypress-recaptcha">recaptcha.log // ----------------- Sanitize multidimensional array ---------------
+
+// data in $_POST[''wb_ads_rotator'']
+
+$ads_data =filter_input(INPUT_POST, 'wb_ads_rotator', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+
+// -------------------------------------------------------------
+
+// -------------------- Load Script via Javascript ------------------ /
+
+$.getScript(wbcom_plugin_installer_params.quick_view_click_enabled);
+
+// ------------------------------- Define variable/term for js use throughout wordpress ---------------------------
+
+Url : https: //developer.wordpress.org/reference/functions/wp_localize_script/
+
+function theme_enqueue_scripts() {
+    /**
+     * frontend ajax requests.
+      
+    wp_enqueue_script('frontend-ajax', JS_DIR_URI . 'frontend-ajax.js', array('jquery'), null, true);
+    wp_localize_script('frontend-ajax', 'frontend_ajax_object',
+        array('ajaxurl'=> admin_url('admin-ajax.php'),
+            'data_var_1'=> 'value 1',
+            'data_var_2'=> 'value 2',
+        ));
+}
+
+add_action('wp_enqueue_scripts', 'theme_enqueue_scripts');
+
+// Access the variable using :-
+
+jQuery(document).ready(function($) {
+        $.ajax({
+            url: frontend_ajax_object.ajaxurl, // frontend_ajax_object array that contains all data
+
+            type: 'get',
+            data: {
+                'action':'states_city_filter'
+            }
+
+            ,
+            success: function(response) {
+                console.log(response);
+            }
+
+            ,
+        });
+});
+
+// ---------------------------------------------
+
+// Find element is visible on page scroll
+
+function isVisible($el) {
+    var winTop=$(window).scrollTop();
+    var winBottom=winTop+$(window).height();
+    var elTop=$el.offset().top;
+    var elBottom=elTop+$el.height();
+    return ((elBottom<=winBottom) && (elTop >=winTop));
+}
+
+$(window).scroll(function() {
+        $("#msg").text("#box1 visible=" + isVisible($("#box1")));
+    });
+
+
+// ------------- Working example of custom URL in wordpress -----
+
+function ld_dashboard_instructors_callback($atts ) {
+    $pro_category_action =get_query_var('my_subscriber');
+    echo 'User ID: ' . $pro_category_action;
+}
+
+add_shortcode('ld_dashboard_instructors', 'ld_dashboard_instructors_callback');
+
+add_action('init',
+    function() {
+
+        $page_id =75;
+        $page_data =get_post($page_id );
+
+        if ( ! is_object($page_data )) {
+            return;
+        }
+
+        add_rewrite_rule($page_data->post_name . '/instructor/([^/]+)/?$',
+            'index.php?pagename=' . $page_data->post_name . '&my_subscriber=$matches[1]',
+            'top'
+        );
+
+    });
+
+add_filter('query_vars',
+    function($vars ) {
+        $vars[]='my_subscriber';
+        return $vars;
+    });
+
+add_filter('the_content',
+    function($content ) {
+        global $post;
+
+        if (2==$post->ID ) {
+            $content ='[ld_dashboard_instructors]'; // Any content you like
+        }
+
+        return $content;
+    });
+
+// ------------ Iterating Through an Object with `forEach()` in JS -------
+
+// Using Object.keys()
+
+const obj= {
+    name: 'Jean-Luc Picard',
+        rank: 'Captain'
+}
+
+;
+
+// Prints "name Jean-Luc Picard" followed by "rank Captain"
+Object.keys(obj).forEach(key=> {
+        console.log(key, obj[key]);
+    });
+
+// Using Object.values()
+
+const obj= {
+    name: 'Jean-Luc Picard',
+        rank: 'Captain'
+}
+
+;
+
+// Prints "Jean-Luc Picard" followed by "Captain"
+Object.values(obj).forEach(val=> {
+        console.log(val);
+    });
+
+// Using Object.entries()
+
+const obj= {
+    name: 'Jean-Luc Picard',
+        rank: 'Captain'
+}
+
+;
+
+// Prints "name Jean-Luc Picard" followed by "rank Captain"
+Object.entries(obj).forEach(entry=> {
+        const [key, value]=entry;
+        console.log(key, value);
+    });
+
+// ------------ Get dates, weeks, months ---------------------
+
+$current_m =gmdate('F');
+
+for ($m =1; $m <=12; $m++ ) {
+    $month =gmdate('F', mktime(0, 0, 0, $m, 1, gmdate('Y')));
+    echo $month . '<br>';
+
+    if ($current_m ==$month ) {
+        break;
+    }
+}
+
+$dates =array();
+
+for ($i =1; $i <=gmdate('t', strtotime('last month')); $i++ ) {
+
+    $dates[]=str_pad($i, 2, '0', STR_PAD_LEFT) . ' ' . gmdate('M', strtotime('last month'));
+
+}
+
+var_dump($dates );
+
+$dates =array();
+
+$current_d =gmdate('d M');
+
+for ($i =1; $i <=gmdate('t'); $i++ ) {
+    if (in_array($current_d, $dates )) {
+        break;
+    }
+
+    $dates[]=str_pad($i, 2, '0', STR_PAD_LEFT) . ' ' . gmdate('M');
+}
+
+var_dump($dates );
+
+$dates =array();
+
+for ($i =gmdate('d', strtotime('-7 days')); $i <=gmdate('d'); $i++ ) {
+
+    $dates[]=str_pad($i, 2, '0', STR_PAD_LEFT) . ' ' . gmdate('M');
+
+}
+
+var_dump($dates );
+
+// ---------------- Sortable JS ------------------
+
+function initSortableLessons() {
+    jQuery(".ld-dashboard-course-builder-content").sortable({
+
+        scrollSpeed: 1,
+        axis: "y",
+        cursor: "move",
+        items: "> .ld-dashboard-course-builder-lesson",
+        scrollSensitivity: 1,
+        update: function (event, ui) {
+            let elem=ui.item[0];
+            let elemMovedIndex=elem.getAttribute("data-item_key");
+
+            jQuery(".ld-dashboard-course-builder-lesson").each(function (index,
+                    elm) {
+                    let oldIndex=jQuery(this).data("item_key");
+                    jQuery(this).attr("data-item_key", index);
+
+                    jQuery(this) .find("input") .each(function () {
+                            let attrName=jQuery(this).attr("name");
+                            let newAttrName=attrName.replace(oldIndex, index);
+                            jQuery(this).attr("name", newAttrName);
+                        });
+                });
+        }
+
+        ,
+    });
+}
+
+// ----------------- Sortable, Droppable, Draggable JS ----------------- /
+
+function initSortableQuestionBuilder() {
+    jQuery('.ld-dashboard-assigned-questions-wrapper').sortable({
+
+        scrollSpeed: 1,
+        axis: "y",
+        cursor: "move",
+        items: "> ul > li",
+        containment: "parent",
+        scrollSensitivity: 1,
+        update: function (event, ui) {
+            let elem=ui.item[0];
+
+            // let elemMovedIndex = elem.getAttribute("data-item_key");
+            jQuery(".ld-dashboard-assigned-questions-wrapper > ul").find('li').each(function (index, elm) {
+                    let questionId=jQuery(this).find("input").val();
+                    let value=jQuery(this).attr("data-value");
+                    let html='<input type="hidden" name="ld_quiz_builder[' + index +']" value="' + questionId +'">';
+                    jQuery(this).find("input").remove();
+                    jQuery(this).append(html);
+                });
+        }
+
+        ,
+    });
+}
+
+function initDragNDropQuestionBuilder() {
+    let assignContainer=jQuery('.ld-dashboard-quiz-builder-question > ul');
+
+    jQuery("li", assignContainer).draggable({
+        revert: "invalid",
+        helper: "clone"
+    });
+
+jQuery(".ld-dashboard-assigned-questions-wrapper").droppable({
+    drop: function(event, ui) {
+        let inputElement=jQuery(ui.draggable)[0].querySelectorAll('input');
+        let spanElement=jQuery(ui.draggable)[0].querySelectorAll('span');
+        let inputElementCount=inputElement.length;
+        let spanElementCount=spanElement.length;
+
+        if (spanElementCount==0 && inputElementCount==0) {
+            let html=jQuery(ui.draggable)[0].innerHTML;
+            let questionId=jQuery(ui.draggable)[0].dataset.question;
+            let count=jQuery('.ld-dashboard-assigned-questions-wrapper > ul').find('li').length;
+            let content='<li>' + html +'<input type="hidden" name="ld_quiz_builder[' + count +']" value="' + questionId + '"><span class="dashicons dashicons-trash remove-question"></span></li>';
+            jQuery('.ld-dashboard-assigned-questions-wrapper > ul').append(content);
+            initSortableQuestionBuilder();
+            $(ui.draggable).remove();
+        }
+    }
+});
+}
+
+// ---------- Add nav menu to bp member profile ---------------
+
+add_action('wp', 'wbbpp_add_extended_profile_menu');
+
+/**
+ *
+ * Function to add extended profile menu tab at BuddyPress profile page.
+  
+public function wbbpp_add_extended_profile_menu() {
+
+    global $bp;
+
+    if (bp_is_my_profile() || current_user_can('administrator')) {
+        $wbbpp_general_settings =get_option('wbbpp_general_settings');
+        $tab_name =isset($wbbpp_general_settings['fld_tab_name']) ? ucwords($wbbpp_general_settings['fld_tab_name']): 'Extended Fields';
+        $tab_slug =sanitize_title($tab_name );
+        bp_core_new_subnav_item(array('name'=> __('1231231', 'buddypress-profile-pro'),
+                'slug'=> '1231231',
+                // 'parent_url' => trailingslashit( bp_loggedin_user_domain() . 'profile' ),
+                'parent_url'=> trailingslashit(bp_displayed_user_domain() . 'profile'),
+                'parent_slug'=> 'profile',
+                'screen_function'=> array($this, 'wbbpp_show_add_extended_profile_screen'),
+                'position'=> 20,
+            ));
+    }
+}
+
+// ---------------------------------------------
+
+/**
+   * Ajax callback to add quick view product to wc cart.
+    
+public function wb_quick_view_add_popup_product_to_cart_callback() {
+
+    // Check for ajax nonce
+    if (isset($_POST['nonce']) && ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'ajax-nonce')) {
+        exit();
+    }
+
+    if (isset($_POST['product_id']) && ! empty($_POST['product_id'])) {
+        $product_id =sanitize_text_field(wp_unslash($_POST['product_id']));
+        $quantity =(isset($_POST['quantity'])) ? sanitize_text_field(wp_unslash($_POST['quantity'])): 1;
+        $product_cart_id =WC()->cart->generate_cart_id($product_id );
+
+        if ( ! WC()->cart->find_product_in_cart($product_cart_id )) {
+            WC()->cart->add_to_cart($product_id, $quantity );
+        }
+    }
+
+    exit();
+}
+
+// -----------------------------------------------------
+
+// -------- Add custom post type in wordpress --------------
+
+$post_type_labels =array('name'=> _x('Filter presets', '[Admin] name of presets custom post type', 'wb-ajax-filter'),
+    'singular_name'=> _x('Filter preset', '[Admin] singular name of presets custom post type', 'wb-ajax-filter'),
+    'add_new_item '=> _x('Add new preset', '[Admin] add new filter preset label', 'wb-ajax-filter'),
+);
+$post_type_args =array('label'=> _x('Filter presets', '[Admin] name of presets custom post type', 'wb-ajax-filter'),
+    'labels'=> $post_type_labels,
+    'public'=> false,
+    'show_ui'=> true,
+    'show_in_menu'=> false, // True if you want to show in admin dashboard menu
+    'supports'=> array('title'),
+);
+
+register_post_type('post_type_slug ', $post_type_args );
+
+// ----------------------------------------------------------------------------------
+
+// ----------------------- Get users activities buddypress -----------------
+
+function bp_activity_get($args ='') {
+
+    $r =bp_parse_args($args, array('max'=> false, // Maximum number of results to return.
+            'fields'=> 'all',
+            'page'=> 1, // Page 1 without a per_page will result in no pagination.
+            'per_page'=> false, // results per page
+            'sort'=> 'DESC', // sort ASC or DESC
+            'display_comments'=> false, // False for no comments. 'stream' for within stream display, 'threaded' for below each activity item.
+
+            'privacy'=> false, // Privacy of activity
+            'search_terms'=> false, // Pass search terms as a string
+            'meta_query'=> false, // Filter by activity meta. See WP_Meta_Query for format
+            'date_query'=> false, // Filter by date. See first parameter of WP_Date_Query for format.
+            'filter_query'=> false,
+            'show_hidden'=> false, // Show activity items that are hidden site-wide?
+            'exclude'=> false, // Comma-separated list of activity IDs to exclude.
+            'in'=> false, // Comma-separated list or array of activity IDs to which you
+            // want to limit the query.
+            'spam'=> 'ham_only', // 'ham_only' (default), 'spam_only' or 'all'.
+            'update_meta_cache'=> true,
+            'count_total'=> false,
+            'scope'=> false,
+
+            /**
+         * Pass filters as an array -- all filter items can be multiple values comma separated:
+         * array(
+         *     'user_id'      => false, // User ID to filter on.
+         *     'object'       => false, // Object to filter on e.g. groups, profile, status, friends.
+         *     'action'       => false, // Action to filter on e.g. activity_update, profile_updated.
+         *     'primary_id'   => false, // Object ID to filter on e.g. a group_id or blog_id etc.
+         *     'secondary_id' => false, // Secondary object ID to filter on e.g. a post_id.
+         * );
+          
+            'filter'=> array()), 'activity_get');
+
+    $activity =BP_Activity_Activity: :get(array('page'=> $r['page'],
+                'per_page'=> $r['per_page'],
+                'max'=> $r['max'],
+                'sort'=> $r['sort'],
+                'privacy'=> $r['privacy'],
+                'search_terms'=> $r['search_terms'],
+                'meta_query'=> $r['meta_query'],
+                'date_query'=> $r['date_query'],
+                'filter_query'=> $r['filter_query'],
+                'filter'=> $r['filter'],
+                'scope'=> $r['scope'],
+                'display_comments'=> $r['display_comments'],
+                'show_hidden'=> $r['show_hidden'],
+                'exclude'=> $r['exclude'],
+                'in'=> $r['in'],
+                'spam'=> $r['spam'],
+                'update_meta_cache'=> $r['update_meta_cache'],
+                'count_total'=> $r['count_total'],
+                'fields'=> $r['fields'],
+            ));
+
+    /**
+     * Filters the requested activity item(s).
+     *
+     * @since BuddyPress 1.2.0
+     *
+     * @param BP_Activity_Activity $activity Requested activity object.
+     * @param array                $r        Arguments used for the activity query.
+      
+    return apply_filters_ref_array('bp_activity_get', array(&$activity, &$r ));
+}
+
+// -------------------------------------------------------------------------------
+
+// Phpcs get error of specefic file
+
+->open terminal in vscode ->go to the directory of file ->type phpcs --standard="WordPress" custom.php command
+/*
+ ------------------------------------
+|                                    |
+|  Stripe Payment Implementation     |
+|                                    |
+ ------------------------------------
+ 
+
+// For Card validation
+function callback_make_payment($request) {
+    global $wpdb;
+
+    $param =$request->get_params();
+
+    $stripe_mode =get_option('stripe_mode');
+
+    $stripeKey ='sk_test_vk32kXNVcKQH96rj1wMvff8A';
+    // $stripeKey ='';
+    // if($stripe_mode == 'live') {
+    //     $stripeKey = get_option( 'stripe_settings_sk_live' );
+    // }else{
+    //     $stripeKey = get_option( 'stripe_settings_sk_test' );
+    // }
+
+    if($stripeKey =='') {
+        $data=array('status'=> 'error',
+            'message'=> 'Empty stripe key, please set stripe key'
+        );
+        return new WP_REST_Response($data, 403);
+    }
+
+    $userid =$param['userid'];
+    $amount =$param['post_amount'];
+
+    \Stripe\Stripe::setApiKey($stripeKey);
+
+    $month_year=explode('/', $param['card_expiration_date']);
+
+    try {
+        $result =\Stripe\Token: :create(array("card"=> array("name"=> $param['card_holder_name'],
+                        "number"=> $param['card_number'],
+                        "exp_month"=> $param['exp_month'],
+                        "exp_year"=> $param['exp_year'],
+                        "cvc"=> $param['cvc'])));
+
+        if($result) {
+            $addressBilling =array("address_1"=> '',
+                "address_2"=> '',
+                "city"=> '',
+                "country"=> '',
+                "postcode"=> '',
+            );
+
+            $customer_id =check_stripe_customer_existence($param, $user_id, $stripeKey, $addressBilling);
+
+            $charge =payment_transaction($customer_id, $amount, $stripeKey);
+
+            $transaction_id =$charge->id;
+            $post_id =$param['post_id'];
+            $stripe_source_id =$charge->payment_method;
+            $stripe_captured =$charge->captured;
+            $currency =$charge->currency;
+            $stripe_customer_id =$charge->customer;
+            $payment_datetime =$charge->created;
+            $amount =($charge->amount) / 100;
+            $brand =$charge->payment_method_details->card->brand;
+            $last4 =$charge->payment_method_details->card->last4;
+            $payment_method =strtoupper($brand).' - ' .$last4;
+
+            $responce =json_encode($charge);
+            $request =json_encode($param);
+
+            // Payment Success
+            $sql ="INSERT INTO wp_custom_payment_details(user_id, post_id, transaction_id, stripe_source_id, stripe_captured, currency, stripe_customer_id, payment_datetime, amount, payment_method, response, request)
+ VALUES ($userid, $post_id, '$transaction_id', '$stripe_source_id', $stripe_captured, '$currency', '$stripe_customer_id', $payment_datetime, $amount, '$payment_method', '$responce', '$request')";
+$wpdb->query($sql);
+
+            if( !empty($transaction_id)) {
+                $data=array('status'=> 'ok',
+                    'message'=> 'Payment has been successfully made.',
+                    'data'=> $charge,
+                    'query'=> $sql );
+            }
+
+            else {
+                // Payment Error
+                $data=array('status'=> 'error',
+                    'message'=> 'Error, Something went wrong.',
+                );
+                return new WP_REST_Response($data, 403);
+            }
+        }
+
+
+    }
+
+    catch(Exception $ex) {
+        $data=array('status'=> 'error',
+            'message'=> $ex->getMessage());
+    }
+
+    return new WP_REST_Response($data, 200);
+}
+
+// For Customer creation
+function check_stripe_customer_existence($param, $user_id, $stripeKey, $addressBilling) {
+
+    $stripe_customer_id=get_user_meta($user_id, '_stripe_customer_id', true);
+
+    if($stripe_customer_id=='') {
+        \Stripe\Stripe: :setApiKey($stripeKey);
+
+        $month_year=explode('/', $param['card_expiration_date']);
+        // getting token by card information
+        $token_id =\Stripe\Token: :create(array("card"=> array("name"=> $param['card_holder_name'],
+                        "number"=> $param['card_number'],
+                        "exp_month"=> $param['exp_month'],
+                        "exp_year"=> $param['exp_year'],
+                        "cvc"=> $param['cvc'])));
+
+        // registrating user by token
+        $customer =\Stripe\Customer: :create(array('source'=> $token_id['id'],
+                    'email'=> get_userdata($user_id)->user_email,
+                    'address'=> array('line1'=> $addressBilling['address_1'],
+                        'line2'=> $addressBilling['address_2'],
+                        'city'=> $addressBilling['city'],
+                        'country'=> $addressBilling['country'],
+                        'postal_code'=> $addressBilling['postcode'],
+                    ),
+                    'phone'=> get_user_meta($user_id, 'phone', true)));
+
+        update_user_meta($user_id, '_stripe_customer_id', $customer->id);
+
+        $stripe_customer_id =$customer->id;
+        return $stripe_customer_id;
+    }
+
+    return $stripe_customer_id;
+}
+
+// For Payment transaction
+function payment_transaction($customer_id, $amount, $stripeKey) {
+
+    \Stripe\Stripe: :setApiKey($stripeKey);
+    $charge =\Stripe\Charge: :create([ 'amount'=> $amount*100,
+            'currency'=> 'usd',
+            'customer'=> $customer_id,
+            // 'metadata'   => array(
+            //  'order_id'  => $order_id
+            // )
+            ]);
+
+    return $charge;
+}
+
+//------------ Wp delete Query ------------------/
+
+$flag =$wpdb->delete("wp_download_song", array('track_id'=> $param['track_id'], 'user_id'=> $user_id));
+?><script> // -------- Restrict users from creating specefic role users -------------- /
+
+function wpse_188863_get_allowed_roles($user ) {
+
+    $allowed =array();
+    $user_id =get_current_user_id();
+    $user_data =get_userdata($user_id);
+    $roles1 =$user_data->roles;
+
+    if(in_array('admin', $roles1)) {
+
+        if (in_array('admin', $user->roles )) {
+            // Admin can edit all roles
+
+            $allowed[]='bar';
+
+        }
+
+        return $allowed;
+    }
+}
+
+function wpse_188863_editable_roles($roles ) {
+
+    $user_id =get_current_user_id();
+    $user_data =get_userdata($user_id);
+    $roles1 =$user_data->roles;
+
+    if(in_array('admin', $roles1)) {
+
+        if ($user =wp_get_current_user()) {
+            $allowed =wpse_188863_get_allowed_roles($user );
+
+            foreach ($roles as $role => $caps ) {
+                if ( ! in_array($role, $allowed )) unset($roles[ $role ]);
+            }
+        }
+    }
+
+    return $roles;
+}
+
+add_filter('editable_roles', 'wpse_188863_editable_roles');
+
+function wpse_188863_map_meta_cap($caps, $cap, $user_ID, $args ) {
+
+    $user_id =get_current_user_id();
+    $user_data =get_userdata($user_id);
+    $roles1 =$user_data->roles;
+
+    if(in_array('admin', $roles1)) {
+
+
+        if (($cap ==='edit_user' || $cap ==='delete_user') && $args ) {
+            $the_user =get_userdata($user_ID ); // The user performing the task
+            $user =get_userdata($args[0]); // The user being edited/deleted
+
+            if ($the_user && $user && $the_user->ID  !=$user->ID
+
+                /* User can always edit self  
+            ) {
+                $allowed =wpse_188863_get_allowed_roles($the_user );
+
+                if (array_diff($user->roles, $allowed )) {
+                    // Target user has roles outside of our limits
+                    $caps[]='not_allowed';
+                }
+            }
+        }
+    }
+
+    return $caps;
+}
+
+// ------------- Add column to custom post list -------------- /
+
+add_filter('manage_mcloset_posts_columns', 'add_more_column_to_post', 10, 1);
+
+function add_more_column_to_post ($posts_columns) {
+
+    $posts_columns[ 'assigned']=__('Closet Status');
+    return $posts_columns;
+}
+
+add_action('manage_mcloset_posts_custom_column', 'ST4_columns_book_content', 10, 2);
+
+function ST4_columns_book_content($column_name, $post_ID) {
+    if ($column_name =='assigned') {
+
+        $assigned =get_post_meta($post_ID, 'customer', true);
+
+        if($assigned =='') {
+            echo '<p style="color:#1b9e1f;font-weight: 700;" >Not Assigned</p>';
+        }
+
+        else {
+            echo '<p style="color:#ca4f4f;font-weight: 700;" >Assigned</p>';
+        }
+
+    }
+
+}
+
+// ------------ Add column and data to Wp list table -------------- /
+
+// Add the custom columns to the book post type:
+add_filter('manage_awsm_job_application_posts_columns', 'set_custom_edit_awsm_job_application_columns', 999, 1);
+
+function set_custom_edit_awsm_job_application_columns($columns) {
+
+    $columns['application_status']='Application Status';
+
+    return $columns;
+}
+
+// Add the data to the custom columns for the book post type:
+add_action('manage_awsm_job_application_posts_custom_column', 'custom_awsm_job_application_column', 10, 2);
+
+function custom_awsm_job_application_column($column, $post_id ) {
+
+    switch ($column ) {
+        case 'application_status':
+            echo get_post_meta($post_id , 'status', true);
+        break;
+
+    }
+}
+
+// ---------- Get Set Remove object terms ------------ /
+
+$product_terms =wp_get_object_terms($post->ID, 'product');
+
+wp_set_object_terms(42, null, 'category');
+
+wp_remove_object_terms($post_id, 'sweet', 'post_tag');
+
+// ------------------- Difference between two Date Time --------------- /
+
+$origin =new DateTime('2009-10-11 12:10:11');
+$target =new DateTime('2009-10-12 14:10:12');
+$interval =$origin->diff($target);
+echo $interval->format('%R%a days %H:%I:%S');
+
+// -------------- Add filter to custom post type list table ----------- /
+
+
+add_action('restrict_manage_posts', 'bs_event_table_filtering', 1111);
+
+function bs_event_table_filtering() {
+
+    global $wpdb;
+
+    if (isset($_GET['post_type']) && $_GET['post_type']=='mcloset') {
+
+        if (isset($_GET['status']) && $_GET['status'] !='') {
+            $assigned =($_GET['status']=='assigned') ? 'selected': '';
+            $not_assigned =($_GET['status']=='not_assigned') ? 'selected': '';
+        }
+
+        ?><select name="status"><option value="">Select Closet Status</option><option value="assigned" <?php echo $assigned;
+        ?>>Assigned</option><option value="not_assigned" <?php echo $not_assigned;
+        ?>>Not Assigned</option></select><?php
+    }
+}
+
+
+add_filter('parse_query', 'closet_custom_post_filter');
+
+function closet_custom_post_filter($query) {
+
+    global $pagenow;
+    $post_type =(isset($_GET['post_type'])) ? $_GET['post_type']: '';
+
+    if ($post_type =='mcloset' && isset($_GET['status']) && !empty($_GET['status'])) {
+
+        if($_GET['status']=='assigned') {
+
+            $meta_query =array(array('key'=> 'customer',
+                    'value'=> '',
+                    'compare'=> '!='
+                ));
+
+        }
+
+        else if($_GET['status']=='not_assigned') {
+
+            $meta_query =array('relation'=> 'OR',
+                array('key'=> 'customer',
+                    'value'=> '',
+                    'compare'=> '=='
+                ),
+
+            );
+
+        }
+
+        $query->query_vars['meta_query']=$meta_query;
+    }
+}
+
+
+//--------------------------------
+add_filter('map_meta_cap', 'wpse_188863_map_meta_cap', 10, 4);
+
+/**
+         * Filters the query arguments used to retrieve users for the current users list table.
+         *
+         * @since 4.4.0
+         *
+         * @param array $args Arguments passed to WP_User_Query to retrieve items for the current
+         *                    users list table.
+          
+
+$args =apply_filters('users_list_table_query_args', $args );
+
+// ---------------- Adds Custom Column To Users List Table --------------/
+
+function custom_add_user_id_column($columns) {
+    $columns['user_id']='User ID';
+    return $columns;
+}
+
+add_filter('manage_users_columns', 'custom_add_user_id_column');
+
+//Adds Content To The Custom Added Column
+function custom_show_user_id_column_content($value, $column_name, $user_id) {
+    $user =get_userdata($user_id );
+    if ('user_id'==$column_name ) return $user_id;
+    return $value;
+}
+
+add_filter('manage_users_custom_column', 'custom_show_user_id_column_content', 10, 3);
+
+//--------- Make field as readonly --------------/
+
+document.getElementById("myText").readOnly=true;
+
+/*   textObject.readOnly = true|false  
+
+//[START]=>Add the data to the custom columns for the 'SCHEDULE_POST' post type:
+// Add the custom columns to the 'SCHEDULE_POST' post type:
+add_filter('manage_' .SCHEDULE_POST.'_posts_columns', 'set_custom_columns_for_doctor_callback');
+
+function set_custom_columns_for_doctor_callback($columns) {
+    $columns['social_media']=__('Social Media');
+    // $columns['status']   = __('Status');
+    $columns['createdBy_User']=__('Author');
+    $columns['updated']=__('Update');
+    return $columns;
+}
+
+add_action('manage_' .SCHEDULE_POST.'_posts_custom_column', 'set_values_for_doctor_columns_callback', 10, 2);
+
+function set_values_for_doctor_columns_callback($column, $post_id ) {
+
+    switch ($column ) {
+        case 'status':
+            $FB_post_status =get_post_meta($post_id, 'FB_post_status', true);
+        echo ($FB_post_status ==1)? "Posted": (($FB_post_status ==false)? "Scheduled": "");
+        break;
+        case 'social_media':
+            $social_media =ucwords(get_post_meta($post_id, 'social_media', true));
+
+        if(strtolower($social_media)==strtolower('facebook')) {
+            echo '<span style="background: #3b5998; font-weight: bold; color: white; padding: 3px; border: 3px double; ">' .$social_media.'</span>';
+        }
+
+        elseif(strtolower($social_media)==strtolower('linkedin')) {
+            echo '<span style="background: #0e76a8; font-weight: bold; color: white; padding: 3px; border: 3px double; ">' .$social_media.'</span>';
+        }
+
+        elseif(strtolower($social_media)==strtolower('twitter')) {
+            echo '<span style="background: rgb(29, 161, 242); font-weight: bold; color: white; padding: 3px; border: 3px double; ">' .$social_media.'</span>';
+        }
+
+        else {
+            echo '<span style="background: black ;font-weight: bold; color: white; padding: 3px; border: 3px double; ">' .$social_media.'</span>';
+        }
+
+        break;
+
+        case 'createdBy_User' : $createdBy_User =get_post_meta($post_id, 'createdBy_User', true);
+        $first_name =trim(get_user_meta($createdBy_User, 'first_name', true));
+        $last_name =trim(get_user_meta($createdBy_User, 'last_name', true));
+        $res =get_userdata($createdBy_User);
+        $authorData =$res->data;
+        $display_name =$authorData->display_name;
+        $author_name =(isset($first_name) && isset($last_name)) ? trim($first_name." " .$last_name) : $display_name;
+        $user_url =get_admin_url()."user-edit.php?user_id=" .$createdBy_User;
+        echo "<a href='" .$user_url."' >" .$author_name."</a>";
+        break;
+
+        case 'updated' : echo 'Updated';
+        break;
+    }
+}
+
+//[END]=>Add the data to the custom columns for the 'doctor' post type:
+/******************************************************* 
+
+// ---------------------- jQuery set time for function execution ---------------/
+
+setTimeout(function() {
+        change_heading();
+    }
+
+    , 600);
+
+// ------------------------- Jquery js change time format --------------- /
+
+function change_second_format(sec) {
+    var sec_num=parseInt(sec, 10); // don't forget the second param
+    var hours=Math.floor(sec_num / 3600);
+    var minutes=Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds=sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours="0"+hours;
+    }
+
+    if (minutes < 10) {
+        minutes="0"+minutes;
+    }
+
+    if (seconds < 10) {
+        seconds="0"+seconds;
+    }
+
+    return hours+':'+minutes+':'+seconds;
+}
+
+// ------------- Get random color array --------------- /
+
+let colorArray=getRandomColorArray(20);
+
+function getRandomColor() {
+    var letters='0123456789ABCDEF';
+    var color='#';
+
+    for (var i=0; i < 6; i++) {
+        color+=letters[Math.floor(Math.random() * 16)];
+    }
+
+    return color;
+}
+
+function getRandomColorArray(count) {
+    let colors=[];
+
+    for (var i=0; i < count; i++) {
+        let color=getRandomColor();
+        colors.push(color);
+    }
+
+    return colors;
+}
+
+// ------------ WC get all order status ------------------- /
+
+$args['post_status']=wc_get_order_statuses();
+
+// ---------- Show specefic role user listing in user.php page -------- /
+
+function wpd_filter_users($query ) {
+
+    $user_id =get_current_user_id();
+    $user_data =get_userdata($user_id);
+    $roles =$user_data->roles;
+
+    $screen =get_current_screen();
+
+    if(in_array('admin', $roles) && 'users'==$screen->base ) {
+        $query->set('role', 'bar');
+    }
+}
+
+add_action('pre_get_users', 'wpd_filter_users');
+
+// -------------- Wp rest API Request Wordpress ---------- /
+
+$response =wp_remote_get('https://api.github.com/users/blobaugh');
+
+$args =array('body'=> $body,
+    'timeout'=> '5',
+    'redirection'=> '5',
+    'httpversion'=> '1.0',
+    'blocking'=> true,
+    'headers'=> array(),
+    'cookies'=> array(),
+);
+
+$response =wp_remote_post('http://your-contact-form.com', $args );
+
+
+// -------------- cURL Request ------------------/
+
+// A sample PHP Script to POST data using cURL
+
+$data =array('name'=> 'tutsmake',
+    'email'=> 'tutsmake@gmail.com',
+    'mobile'=> '9898989898',
+);
+
+$post_data =json_encode($data);
+
+// Prepare new cURL resource
+$crl =curl_init('https://example.com/api/user');
+curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($crl, CURLINFO_HEADER_OUT, true);
+curl_setopt($crl, CURLOPT_POST, true);
+curl_setopt($crl, CURLOPT_POSTFIELDS, $post_data);
+
+// Set HTTP Header for POST request
+curl_setopt($crl, CURLOPT_HTTPHEADER, array('Content-Type: application/json',
+        'Content-Length: ' . strlen($payload)));
+
+// Submit the POST request
+$result =curl_exec($crl);
+
+// handle curl error
+if ($result ===false) {
+    // throw new Exception('Curl error: ' . curl_error($crl));
+    //print_r('Curl error: ' . curl_error($crl));
+    $result_noti =0;
+    die();
+}
+
+else {
+
+    $result_noti =1;
+    die();
+}
+
+// Close cURL session handle
+curl_close($crl);
+
+?> // -------------- Woocommerce get all orders query ------------ /
+
+Visit : https: //github.com/woocommerce/woocommerce/wiki/wc_get_orders-and-WC_Order_Query
+
+// ------------- Wordpress auto login on register ------------ /
+
+function auto_login_new_user($user_id ) {
+    wp_set_current_user($user_id);
+    wp_set_auth_cookie($user_id);
+    // You can change home_url() to the specific URL,such as
+    //wp_redirect( 'http://www.wpcoke.com' );
+    wp_redirect(home_url());
+    exit;
+}
+
+add_action('user_register', 'auto_login_new_user');
+
+//---------- AJAX Request Wp --------------------/
+
+add_action("wp_ajax_create_user_label", "create_user_label_callback");
+add_action("wp_ajax_nopriv_create_user_label", "create_user_label_callback");
+
+jQuery.ajax({
+
+    url : '<?php echo admin_url(' admin-ajax.php'); ?>',
+    type : 'post',
+    data : {
+        action : 'create_user_label', head_label : label, user_label : user_label, type : input_type, options : options, data_arr : data_arr, 'property_id': id
+    }
+
+    ,
+    success: function(response) {
+
+        jQuery('.paste_label').html(response);
+    }
+
+});
+
+let nonce=wbcom_plugin_installer_params.wbcom_ajax_nonce;
+
+jQuery.ajax({
+
+    url : wbcom_plugin_installer_params.ajax_url,
+    type : 'post',
+    data : {
+        action : 'create_user_label', 'nonce' : nonce
+    }
+
+    ,
+    success: function(response) {}
+
+});
+
+// ------------- Jquery foreach function on object obj ---------------------------- /
+
+jQuery(obj).each(function(key, value) {}
+
+    // ------------Applying script om dynamic content---------------------------------------------------/
+
+    jQuery('#tabs-1').on("change", 'select[name="exterior[maintenance_select][]"]', function(e) {
+
+            //jQuery('select[name="exterior[maintenance_select][]"]').on('change',function(){
+
+            if (jQuery(this).val()=="Yes") {
+
+                jQuery('.show_ext_desc').removeClass('hide');
+                jQuery('.show_ext_desc').removeClass('show');
+                jQuery('.show_ext_desc').show();
+            }
+
+            if (jQuery(this).val()=="No") {
+                jQuery('.show_ext_desc').removeClass('hide');
+                jQuery('.show_ext_desc').removeClass('show');
+                jQuery('.show_ext_desc').hide();
+            }
+        });
+
+    // ---------------------- Add memu and submenu in wp ------------------ /
+
+    add_action('admin_menu', 'my_menu_pages');
+
+    function my_menu_pages() {
+        add_menu_page('My Page Title', 'My Menu Title', 'manage_options', 'my-menu', 'my_menu_output');
+        add_submenu_page('my-menu', 'Submenu Page Title', 'Whatever You Want', 'manage_options', 'my-menu');
+        add_submenu_page('my-menu', 'Submenu Page Title2', 'Whatever You Want2', 'manage_options', 'my-menu2');
+    }
+
+    // edit.php?post_type=movies
+    add_submenu_page('edit.php?post_type=movies', 'News Settings', 'Settings', 'manage_options', 'news-settings', array($this, 'ca_news_settings_callback'));
+
+    // ------------- wp_list_table ----------------------------------------- /
+
+
+    class Paulund_Wp_List_Table {
+        if(is_admin()) {
+            new Paulund_Wp_List_Table();
+        }
+
+
+        public function __construct() {
+            add_action('admin_menu', array($this, 'add_menu_example_list_table_page'));
+        }
+
+        public function add_menu_example_list_table_page() {
+            add_menu_page('User Subscription Data', 'User Subscription', 'manage_options', 'user-subscription', array($this, 'list_table_page'), 'dashicons-admin-users', 6);
+        }
+
+
+        public function list_table_page() {
+            $exampleListTable =new Example_List_Table();
+            $exampleListTable->prepare_items();
+            ?> <div class="wrap" > <div id="icon-users" class="icon32" ><\div> <h2>User Subscription</h2> <?php $exampleListTable->display(); ?> </div> <?php
+        }
+    }
+
+
+    if( ! class_exists('WP_List_Table')) {
+        require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+    }
+
+
+    class Example_List_Table extends WP_List_Table {
+
+        public function prepare_items() {
+            $columns =$this->get_columns();
+            $hidden =$this->get_hidden_columns();
+            $sortable =$this->get_sortable_columns();
+
+            $data =$this->table_data();
+            usort($data, array(&$this, 'sort_data'));
+
+            $perPage =8;
+            $currentPage =$this->get_pagenum();
+            $totalItems =count($data);
+
+            $this->set_pagination_args(array('total_items'=> $totalItems,
+                    'per_page'=> $perPage ));
+
+            $data =array_slice($data, (($currentPage-1)*$perPage), $perPage);
+
+            $this->_column_headers =array($columns, $hidden, $sortable);
+            $this->items =$data;
+        }
+
+
+        public function get_columns() {
+
+            $columns =array('id'=> 'ID',
+                'user_name'=> 'User Name',
+                'subscription'=> 'Subscription',
+                'transaction_id'=> 'Transcation Id',
+                'subscription_device'=> 'Sub Device',
+                'created'=> 'Created',
+                'modified'=> 'Modified'
+            );
+            return $columns;
+        }
+
+        public function get_hidden_columns() {
+            return array();
+        }
+
+        public function get_sortable_columns() {
+            return array('user_name'=> array('user_name', false));
+        }
+
+        private function table_data() {
+            $data =array();
+            global $wpdb;
+            $subscription_users =$wpdb->get_results('SELECT * FROM `user_subscriptions`', ARRAY_A);
+            $countId =1;
+
+            foreach($subscription_users as $subscription_user) {
+
+                $userName =get_user_meta($subscription_user['user_id'], 'first_name', true) .' ' . get_user_meta($subscription_user['user_id'], 'last_name', true);
+                $subscriptions =explode('.', $subscription_user['Subscription']);
+
+                $data[]=array('id'=> $countId,
+                    'user_name'=> $userName,
+                    'subscription'=> ucfirst($subscriptions[2]),
+                    'transaction_id'=> $subscription_user['transcation_id'],
+                    'subscription_device'=> $subscription_user['subscription_device'],
+                    'created'=> $subscription_user['created'],
+                    'modified'=> $subscription_user['modified']);
+
+                $countId++;
+            }
+
+            return $data;
+        }
+
+
+        public function column_default($item, $column_name ) {
+            switch($column_name ) {
+                case 'id': case 'user_name': case 'subscription': case 'transaction_id': case 'subscription_device': case 'created': case 'modified': return $item[ $column_name ];
+
+                default: return print_r($item, true);
+            }
+        }
+
+
+        private function sort_data($a, $b ) {
+            // Set defaults
+            $orderby ='user_name';
+            $order ='asc';
+
+            if( !empty($_GET['orderby'])) {
+                $orderby =$_GET['orderby'];
+            }
+
+            if( !empty($_GET['order'])) {
+                $order =$_GET['order'];
+            }
+
+            $result =strcmp($a[$orderby], $b[$orderby]);
+
+            if($order ==='asc') {
+                return $result;
+            }
+
+            return $result;
+        }
+    }
+
+    ?> // -------------- Password reset function ------------------------------- /
+
+
+
+    global $gw_activate_template;
+
+    extract($gw_activate_template->result );
+
+    $url =is_multisite() ? get_blogaddress_by_id((int) $blog_id ) : home_url('', 'http');
+    $user =new WP_User((int) $user_id );
+
+    ?> <h2><?php _e('Your account is now active!'); ?></h2> <div id="signup-welcome" > <p><span class="h3" ><?php _e('Username:'); ?></span> <?php echo $user->user_login ?></p> <p>To set your password, select the following link: <a href="http://example.com/wp-login.php?action=rp&key=<?php echo $gw_activate_template->get_activation_key(); ?>&login=<?php echo $user->user_login; ?>" >http: //example.com/wp-login.php?action=rp&amp;key=<?php echo $gw_activate_template->get_activation_key(); ?>&amp;login=<?php echo $user->user_login; ?></a></p>"
+    </div> <?php if ($url  !=network_home_url('', 'http')) : ?> <p class="view" ><?php printf(__('Your account is now activated. <a href="%1$s">View the site</a> or <a href="%2$s">Log in</a>'), $url, $url . 'wp-login.php'); ?></p> <?php else: ?> <p class="view" ><?php printf(__('Your account is now activated. <a href="%1$s">Log in</a> or go back to the <a href="%2$s">homepage</a>.'), network_site_url('wp-login.php', 'login'), network_home_url()); ?></p> <?php endif; ?> //--------------------------- Get values of all classes ---------------------------------------/
+
+    var modals=document.getElementById('myModal');
+    var btns=document.getElementsByClassName("openmodal");
+    var spans=document.getElementsByClassName("close");
+
+    for(let i=0; i< btns.length; i++) {
+        btns[i].onclick=function() {
+            label=document.getElementsByClassName("add_modal")[i].getAttribute("data-label");
+            modals.style.display="block";
+            //console.log(modals);
+        }
+    }
+
+    for(let i=0; i< spans.length; i++) {
+        spans[i].onclick=function() {
+            modals.style.display="none";
+        }
+    }
+
+    // --------------- Custom Pagination for response --------- /
+
+    $response =send_request_forSquare($endpoint, $fields);
+    $response =json_decode($response);
+    $venues =$response->response->venues;
+    $number_of_venues =ceil(count($venues) / 5); //Used for getting page num total
+
+    $totalcount =$page * 10; //Number of orders total
+
+    $forcount =0; //The number of times the for loop iterated
+    $count =(int)$totalcount - 10; //sets the limit on what data is to be send in pagination ex. 0-10 , 10-20 etc.
+
+    if(count($venues) > 0) {
+
+        foreach($venues as $venue) {
+            if($forcount >=$count) {
+                if($count < $totalcount) {
+
+                    // $venuestoreturn[] = $venue;
+                    $venuestoreturn .=$venue->id.',';
+                    $count++;
+                }
+
+            }
+
+            $forcount++;
+        }
+
+    }
+
+
+    $data['params']=$fields;
+    $data['total']=count($venues);
+    $data['venues']=$venuestoreturn;
+
+    // -------------- Set AM /am in time -----------------
+    <?php $param ='2020-09-21 13:09:26';
+    $wer =date('m-d-Y H:i:s A', strtotime($param)); // A is used for AM , a is used for am
+    $wer2 =date('H:i:s A');
+    echo $wer." < " .$wer2;
+
+    if(date('h:i:s A', strtotime($select_time)) < date('h:i:s A')) {
+        echo $wer." < " .$wer2;
+    }
+
+    ?> //-------------------------- Get current location latitude, longitude -----------------------------
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(showPosition);
+
+    }
+
+    else {
+
+        x.innerHTML="Geolocation is not supported by this browser.";
+
+    }
+
+    function showPosition(position) {
+
+        var Latitude=position.coords.latitude;
+        document.getElementById("Latitude").value=Latitude;
+        var Longitude=position.coords.longitude;
+        document.getElementById("Longitude").value=Longitude;
+
+    }
+
+    </script> <input type="text" value="" id="Latitude" > <input type="text" value="" id="Longitude" > //------------------------------------------------------------------------------------------------------
+
+
+    golflive strip key previous secret key :sk_test_geqlLcqYwIcElFe9Wc8FXXuE public key : pk_test_KIDYBiSH5zPJC31RqRji9RE8 <?php public function get_stripe_keys() {
+        $stripe_keys =array();
+        $stripe_keys =array("secret_key"=> get_option('options_secret_key'),
+            "publishable_key"=> get_option('options_publisher_key'),
+        );
+        return $stripe_keys;
+    }
+
+    public function get_stripe_keys() {
+        $stripe_keys =array();
+        $stripe_keys =array("secret_key"=> get_option('options_secret_key'),
+            "publishable_key"=> get_option('options_publisher_key'),
+        );
+        return $stripe_keys;
+    }
+
+    // Get post by author Id
+
+    $args =array('post_type'=> 'properties',
+        'post_status'=> 'publish',
+        'author'=> $user_id,
+        'posts_per_page'=> -1,
+        'meta_query'=> array('relation'=> 'AND',
+            array('key'=> 'property_number',
+                'value'=> $post['property_number'],
+                'compare'=> "=",
+            ),
+        ));
+
+    $current_user_posts =get_posts($args );
+
+
+    ?> --------------------- Api request Form ------------------------------- <div class="container" > <h2>API EXPLORER</h2> <div class="body-content" style="margin: 4%;overflow: hidden;" > <div class="float" style="width: 20%;float: left;" > <select name="api-select" > <option>Select Api</option> <option value="list_locations" >List Locations</option> <option value="list_payments" >List Payments </option> <option value="list_customers" >List Customers</option> </select> </div> <div class="float" style="width: 20%;float: left;" > <button class="run-request" >Run Request</button> </div> </div> <div class="response-body" style="margin-left:2%;padding-left: 3%;padding-right: 3%;padding-bottom: 3%;width : 50%;background : black;color: white;font-weight : 300;max-height: 320px;height: 100px;overflow: scroll;" > <h4>Response</h4> </div> </div> <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" ></script> <script type="text/javascript" > jQuery('.response-body').hide();
+
+    jQuery('.run-request').click(function() {
+
+            var api_selected=jQuery('select[name="api-select"]').val();
+
+            jQuery.ajax({
+
+                url : '<?php echo admin_url(' admin-ajax.php'); ?>',
+                type : 'post',
+                data : {
+                    action : 'send_api_request', 'api_called' : api_selected
+                }
+
+                ,
+                dataType: 'text',
+                success: function(response) {
+                    console.log(response.locations);
+                    var data_response=response.locations;
+
+                    for (i=0; i < data_response.length; i++) {
+                        //alert(data_response[i].id);
+                        //console.log(data_response[i].id);
+                    }
+
+                }
+
+            });
+        jQuery('.response-body').show();
+
+    });
+
+
+</script> // ----------- Report for Client ----------------------/
+
+Example 5: Multiparty payment This example assumes that the application, integrated with Square, processes payments on behalf of the seller for a fee (referred to as an application fee). After receiving the request, Square splits the payment between the application developer account (who gets the fee specified) and the seller (who gets the rest of the funds minus Square charges). In the example, both the seller and application developer are independent Square accounts. https: //developer.squareup.com/docs/payments-api/migrate-from-transactions-api
+
+Report - - In the above example the api initially used was 'v2/charge' which had the option of adding additional recipients to perform multi-party payments. - As of now Square has depracated the 'v2/charge' Api and instead updated the 'v2/createpayment' Api to include an option of App Fee Amount. - The app fee amount is the amount that, if specified, will be transferred to the developers account associated with the Application integrated with Square Payments. - So basically, 'v2/createpayment' Api performs a multiparty payment but only between seller account and already specified developer account. - Multi-party payments to specefic users feature has been depracated. //----------------------- Square Api --------------
+
+Consumer key : ck_1a199c2266b062c38bb97425848034afbb11bb7e Consumer Secret : cs_c95eb58cc0d345dbb0aa6296ba666a0937be7981 for(i=0; i <=values.length, i++) {
+
+    $('class/id name').(html/val)(values[i]);
+
+}
+
+// ------------------  get_results() ARRAY_A response ----------------------
+<?php
+/*
+ [8] => Array
+        (
+            [offer_id] => 10
+            [sender_id] => 16
+            [receiver_id] => 13
+            [post_id] => 127407
+            [status] => 3
+            [offer_price] => 300
+            [offer_description] => Please
+            [datetime] => 2020-10-22 03:25:45
+            [modified_at] => 2020-10-22 03:40:06
+        )
+
+    [9] => Array
+        (
+            [offer_id] => 11
+            [sender_id] => 16
+            [receiver_id] => 13
+            [post_id] => 127407
+            [status] => 3
+            [offer_price] => 250
+            [offer_description] => Please sir I really need this item.
+            [datetime] => 2020-10-22 03:27:57
+            [modified_at] => 2020-10-22 03:40:06
+        )
+
+)
+ 
+
+// update cart data
+
+add_action('template_redirect', 'remove_product_from_cart');
+
+function remove_product_from_cart() {
+
+    global $woocommerce, $wpdb;
+
+
+    $cart_content =$woocommerce->cart->get_cart();
+
+    if(is_checkout()) {
+
+        foreach ($cart_content as $hash => $value ) {
+            $value1 =array();
+            $user_id =get_current_user_id();
+
+            $pid =$value['product_id'];
+            // $pid = 127407;
+            // $user_id = 16;
+            $offers =$wpdb->get_results('SELECT * FROM `wp_offer_request` WHERE `sender_id` = "' .$user_id.'" AND `post_id`= "' .$pid.'" AND `status` = "1" ', ARRAY_A);
+
+            if(count($offers) > 0) {
+
+                $price =$offers[0]['offer_price'];
+
+
+
+                $value['data']->set_price($price);
+                $value['data']->set_sale_price($price);
+                $value['data']->set_regular_price($price);
+
+                $value1['a']=$value['data']->get_price();
+                $value1['b']=$value['data']->get_sale_price();
+                $value1['c']=$value['data']->get_regular_price();
+
+            }
+
+        }
+
+        echo "<pre>";
+        print_r($value1);
+        echo "</pre>";
+
+    }
+}
+
+/* --------------- ISN Credentials ------------------
+
+Company Key:  knoxweb
+Access Key: 9b06b923-d84b-4554-a736-df9ac01b065e
+Secret Access Key:  2c813c17-60ab-44bd-80be-4fecd511c695
+
+hostname: https://4isn.com/knoxweb/
+username: lallen
+password: password
+
+Request Url : https://isnadmin.com/rest/isn/url?username=lallen&password=password&companykey=knoxweb
+
+Test Request : https://inspectionsupport.com/test/json/--endpoint--
+
+
+$integration_user = '34503650283750270350263598203528735';
+$integration_pass = '49762993523y59273958729876567293875';
+$company_key = 'test';
+
+// this example uses guzzle - http://guzzlephp.org/
+
+require_once 'vendor/autoload.php';
+use Guzzle\Http\Client;
+
+// Create a client and provide a base URL
+$client = new Client('https://isnadmin.com/rest');
+
+// Create a request with basic Auth
+$request = $client->get('/isn/url?companykey='.$company_key)->setAuth($integration_user, $integration_pass);
+
+// Send the request and get the response
+$response = $request->send();
+
+$response_object = json_decode( $response->getBody() );
+
+if ($response_object->status == 'ok') {
+$url = $response_object->url;
+}
+
+echo 'URL: '.$url;
+
+ 
+
+//--------- Square test accounts ----------- /
+/*
+
+1) - email - rosebak183@sdysofa.com
+
+   - password - sR@123456
+
+   - access token -    EAAAEPmtxIuvq0ijAPhPbccSP5OULKINRKlhtSjieUmjf4meD6CJjCPYYcHAhb6b
+
+   - location id - LBAWA7JJFB6CR
+
+2) - email - pepon42241@yektara.com
+
+   - password -
+
+   - access token - EAAAEEzjU6hYrW5hmTqihm1v_dk7Ji_MROpb02Qner3hUFNM1I1KpmqJl3grQS28
+
+   - location id - LG8R9HD5QKMYZ
+
+ 
+
+
+-->

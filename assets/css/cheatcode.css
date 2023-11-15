@@ -228,7 +228,7 @@ function setMarkers(map, jobArr) {
 }
 }
 
-</script><script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJqFaCvuUFQ8u2qKJUG67ZHgkD6FFQ9cE"></script> // ------------------- woocommerce cart update -------------------
+</script><script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_API_KEY"></script> // ------------------- woocommerce cart update -------------------
 
 add_action('template_redirect', 'remove_product_from_cart');
 
@@ -1920,7 +1920,7 @@ Example 5: Multiparty payment This example assumes that the application, integra
 
 Report - - In the above example the api initially used was 'v2/charge' which had the option of adding additional recipients to perform multi-party payments. - As of now Square has depracated the 'v2/charge' Api and instead updated the 'v2/createpayment' Api to include an option of App Fee Amount. - The app fee amount is the amount that, if specified, will be transferred to the developers account associated with the Application integrated with Square Payments. - So basically, 'v2/createpayment' Api performs a multiparty payment but only between seller account and already specified developer account. - Multi-party payments to specefic users feature has been depracated. //----------------------- Square Api --------------
 
-Consumer key : ck_1a199c2266b062c38bb97425848034afbb11bb7e Consumer Secret : cs_c95eb58cc0d345dbb0aa6296ba666a0937be7981 for(i=0; i <=values.length, i++) {
+ for(i=0; i <=values.length, i++) {
 
     $('class/id name').(html/val)(values[i]);
 
